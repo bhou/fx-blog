@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<!--head-->
+<% include ../common/head %>
+<link rel="stylesheet" href="<%=root%>/highlight/styles/monokai_sublime.css">
+<script src="<%=root%>/highlight/highlight.pack.js"></script>
+<body>
+
+<!--navbar-->
+<% include ../common/navbar %>
+
+<div class="page-title teal lighten-1">
+
+  <div class="nav-wrapper center truncate">
+    <b><%= article.title %></b>
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+    <h1 class="header"><%= article.title %></h1>
+
+    <p class="blog-date teal-text" style="font-size: 1.4em;"><%= lib.moment(Date.parse(article.createAt)).format('MMM DD YYYY'); %></p>
+
+    <div id="article-content" class="col s12">
+      <%- article.content %>
+    </div>
+
+
+    <p class="caption" style="font-size: 1.4em;">
+      <a href="<%= root %>/edit?id=<%= article._id %>">Edit</a>
+    </p>
+  </div>
+</div>
+
+
+<!--footer-->
+<% include ../common/footer %>
+
+<!--Import jQuery before materialize.js-->
+<% include ../common/scripts %>
+
+<script>hljs.initHighlightingOnLoad();</script>
+
+</body>
+</html>

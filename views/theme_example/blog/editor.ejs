@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<!--head-->
+<%= include ../common/head %>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.16/angular.min.js"></script>
+<script type="text/javascript" src="<%= root %>/landing/js/ng-upload.js"></script>
+<script type="text/javascript" src="<%= root %>/landing/js/blogImageLibModule.js"></script>
+
+<body>
+
+<!--navbar-->
+<%= include ../common/navbar %>
+
+<div class="page-title teal lighten-1">
+  <div class="nav-wrapper center truncate">
+    <b>Blog Editor</b>
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="row col s8">
+      <div class="row">
+
+      </div>
+
+      <div id="editor-form" class="row">
+        <div class="input-field col s12">
+          <input id="editor-article-id" type="text" hidden>
+          <textarea id="editor-article-content" hidden></textarea>
+          <input id="editor-title" type="text" class="validate">
+          <label for="editor-title" style="font-size:1.4em;">Title</label>
+        </div>
+        <div class="input-field col s12">
+          <input id="editor-feature-image" type="text" class="validate">
+          <label for="editor-feature-image" style="font-size:1.4em;">Featured Image</label>
+        </div>
+        <div class="input-field col s6">
+          <input name="type" type="radio" id="editor-article-type-blog" checked />
+          <label for="editor-article-type-blog">Blog</label>
+        </div>
+        <div class="input-field col s6">
+          <input name="type" type="radio" id="editor-article-type-page"  />
+          <label for="editor-article-type-page">Page</label>
+        </div>
+      </div>
+
+      <div class="row">
+        <div id="epiceditor"></div>
+      </div>
+
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="editor-tags" type="text" class="validate">
+          <label for="editor-tags" style="font-size:1.4em;">Tags</label>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col m12 l6">
+          &nbsp;
+        </div>
+
+        <div class="col m12 l6">
+          <a id="editor-submit" class="btn pull-right">Publish</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- side library bar -->
+    <div class="row col s3 offset-s1" ng-app="blogImageLibModule" ng-controller="blogImageLibCtrl">
+
+      <div class="row">
+        <h5>Upload Image</h5>
+      </div>
+      <div class="row">
+        <form ng-upload="uploadComplete(content)" action="/blog/image" method="post" enctype="multipart/form-data">
+          <div class="row file-field input-field">
+            <input class="file-path validate" type="text" name="image_file_name"/>
+
+            <div class="btn">
+              <span>File</span>
+              <input type="file" id="image_file" name="image_file"/>
+            </div>
+          </div>
+          <div class="row">
+            <button class="btn waves-effect waves-light" type="submit" style="width: 100%">
+              Add
+            </button>
+          </div>
+        </form>
+      </div>
+
+
+      <div class="row">
+      </div>
+      <div class="row">
+        <h5>Resource Library</h5>
+      </div>
+
+      <div class="row">
+        <div class="row" ng-repeat="image in images">
+          <img class="responsive-img" src="{{image.path}}"/>
+
+          <blockquote>
+            <a ng-click="copyToClipboard(image.path)" class="waves-effect waves-teal btn-flat">Copy URL</a>
+            <a ng-click="deleteImage(image._id)" class="waves-effect waves-teal btn-flat">Delete</a>
+          </blockquote>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col s4">
+          <a class="btn waves-effect waves-light" style="width: 100%" ng-click="getPreviousImages()">
+            <i class="mdi-hardware-keyboard-arrow-left"></i>
+          </a>
+        </div>
+        <div class="col s4">
+          <a class="btn waves-effect waves-light" style="width: 100%" ng-click="getLatestImages()">
+            <i class="mdi-hardware-keyboard-arrow-up"></i>
+          </a>
+        </div>
+        <div class="col s4">
+          <a class="btn waves-effect waves-light" style="width: 100%" ng-click="getNextImages()">
+            <i class="mdi-hardware-keyboard-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+
+      <div>&nbsp;</div>
+
+    </div>
+  </div>
+</div>
+
+
+<!--footer-->
+<%= include ../common/footer %>
+
+<!--Import jQuery before materialize.js-->
+<% include ../common/scripts %>
+
+</body>
+</html>

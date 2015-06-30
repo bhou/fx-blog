@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<!--head-->
+<% include ../common/head %>
+
+<script>
+  var category = "<%=category%>";
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.16/angular.min.js"></script>
+<script type="text/javascript" src="<%= root %>/blog/js/blogListModule.js"></script>
+
+<body>
+
+<!--navbar-->
+<% include ../common/navbar %>
+
+<div class="page-title teal lighten-1">
+  <div class="nav-wrapper center">
+    <b><%= category ? (category.charAt(0).toUpperCase() + category.slice(1)) : 'Category' %></b>
+  </div>
+</div>
+
+<div class="container" ng-app="blogListModule" ng-controller="blogListCtrl">
+
+  <div class="row">
+    <div class="col s12" ng-repeat="article in articles">
+      <div class="card">
+        <div class="card-image">
+          <img src="{{article.featuredImage}}">
+          <span class="card-title truncate blog-title-digest"><b>{{article.title}}</b></span>
+        </div>
+        <div class="card-content">
+          <p class="truncate">{{article.digest}}</p>
+        </div>
+        <div class="card-action">
+          <a class="teal-text text-lighten-1" href="/blog/article?id={{article._id}}">More...</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="blog-pagination">
+      <div class="pull-left">
+        <a class="waves-effect waves-light btn-large disabled"><i
+                  class="mdi-hardware-keyboard-arrow-left"></i></a>
+      </div>
+      <div class="pull-right">
+        <a class="waves-effect waves-light btn-large disabled"><i
+                  class="mdi-hardware-keyboard-arrow-right"></i></a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<!--footer-->
+<% include ../common/footer %>
+
+<!--Import jQuery before materialize.js-->
+<% include ../common/scripts %>
+</body>
+</html>

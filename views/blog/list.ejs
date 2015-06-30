@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<!--head-->
+<% include ../common/head %>
+
+<body>
+
+<!--navbar-->
+<% include ../common/navbar %>
+
+<div class="page-title teal lighten-1">
+  <div class="nav-wrapper center">
+    <b>Wavelet blog</b>
+  </div>
+</div>
+<div class="container">
+  <% for (var i = 0; i < articles.length; i++) { %>
+  <div class="row">
+    <div class="col s12">
+      <div class="card">
+        <div class="card-image">
+          <img src="<%= articles[i].featuredImage %>">
+          <span class="card-title truncate blog-title-digest"><b><%= articles[i].title %></b></span>
+        </div>
+        <div class="card-content">
+          <p class="blog-date-digest teal-text text-lighten-1"><%= lib.moment(Date.parse(articles[i].createAt)).format('MMM DD YYYY'); %></p>
+
+          <p class="truncate"><%= articles[i].digest %></p>
+        </div>
+        <div class="card-action">
+          <a class="teal-text text-lighten-1" href="<%= root %>/article?id=<%= articles[i]._id %>">More...</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% } %>
+
+  <div class="row">
+    <div class="blog-pagination">
+      <div class="pull-left">
+        <% if (page > 0) { %>
+        <a class="waves-effect waves-light btn-large"
+           href="<%= root %>/<%= type %>?page=<%= page - 1 %>&limit=<%= limit %>"><i
+                  class="mdi-hardware-keyboard-arrow-left"></i></a>
+        <% } else { %>
+        <a class="waves-effect waves-light btn-large disabled"><i
+                  class="mdi-hardware-keyboard-arrow-left"></i></a>
+        <% } %>
+      </div>
+      <div class="pull-right">
+        <% if (articles.length >= limit) { %>
+        <a class="waves-effect waves-light btn-large"
+           href="<%= root %>/<%= type %>?page=<%= page + 1 %>&limit=<%= limit %>"><i
+                  class="mdi-hardware-keyboard-arrow-right"></i></a>
+        <% } else { %>
+        <a class="waves-effect waves-light btn-large disabled"><i
+                  class="mdi-hardware-keyboard-arrow-right"></i></a>
+        <% } %>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<!--footer-->
+<% include ../common/footer %>
+
+<!--Import jQuery before materialize.js-->
+<% include ../common/scripts %>
+
+</body>
+</html>

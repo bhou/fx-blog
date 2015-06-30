@@ -1,0 +1,205 @@
+<html>
+<head>
+  <!--Import materialize.css-->
+  <link type="text/css" rel="stylesheet" href="<%= root %>/materialize/css/materialize.min.css"
+        media="screen,projection"/>
+
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <link type="text/css" rel="stylesheet" href="<%= root %>/fx-file-server/css/custom.css"/>
+
+  <link type="text/css" rel="stylesheet" href="<%= root %>/fx-file-server/font/FugazOne-Regular.woff"/>
+
+  <link rel="shortcut icon" type="image/png" href="<%= root %>/fx-file-server/images/wavelet-36.png"/>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.16/angular.min.js"></script>
+  <script type="text/javascript" src="<%= root %>/fx-file-server/js/ng-upload.js"></script>
+  <script type="text/javascript" src="<%= root %>/fx-file-server/js/fileServerModule.js"></script>
+
+  <!--Let browser know website is optimized for mobile-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
+  <script>
+    var webRoot = '<%- _root%>';
+  </script>
+</head>
+
+
+<body>
+<header>
+  <nav class="grey darken-4">
+    <div class="nav-wrapper">
+      <a href="<%= root %>/"><img id="nav-logo" alt="Wavelet"
+                                  src="<%= root %>/fx-file-server/images/wavelet-48.png"></a>
+      <a href="<%= root %>/" class="brand-logo logo-font grey-text">
+        Wavelet
+      </a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <div class="page-title teal lighten-1">
+    <div class="nav-wrapper center">
+      <b>Wavelet File Server Version 0.1.0</b>
+    </div>
+  </div>
+
+  <div class="container" ng-app="fileServerModule" ng-controller="fileServerCtrl">
+    <!-- Modal Structure -->
+    <div id="tagEditor" class="modal">
+      <div class="modal-content">
+        <h4>File Detail</h4>
+
+        <p style="font-size: 24px;">File: <span>{{currentFile.name}}</span></p>
+
+        <div class="row">
+          <div class="input-field col s12">
+            <input style="font-size: 24px;" ng-model="currentFile.tags" id="file-tags" type="text"
+                   class="validate" autofocus>
+            <label style="font-size: 24px;" class="active" for="file-tags">Tags</label>
+          </div>
+          <div>
+            &nbsp;
+          </div>
+          <div class="input-field col s12">
+            <textarea ng-model="currentFile.description" id="textarea-description"
+                      class="materialize-textarea"></textarea>
+            <label style="font-size: 24px;" for="textarea-description">Description</label>
+          </div>
+          <input type="text" value="{{currentFile.name}}" hidden/>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a href="#" class=" modal-action modal-close waves-effect waves-green btn-flat">CLOSE</a>
+        <a ng-click="updateTags()"
+           class=" modal-action modal-close waves-effect waves-green btn-flat">UPDATE</a>
+      </div>
+    </div>
+
+    <div class="row">
+      &nbsp;
+    </div>
+    <div class="row">
+      <div class="search-bar-container z-depth-1">
+        <div class="search-bar">
+          <div class="input-field">
+            <input id="search" type="search" ng-model="keys" ng-keypress="enterKey($event)" required>
+            <label ng-click="getLatestFiles()" for="search"><i class="mdi-action-search"></i></label>
+            <i class="mdi-navigation-close" ng-click="clearKey()"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col s12 m6 l4" ng-repeat="file in files">
+        <div class="card small">
+          <div class="card-image">
+            <img src="<%= root %>{{getImagePath(file.path)}}">
+                        <span class="card-title">
+                        </span>
+          </div>
+          <div class="card-content" style="padding-top: 10px;">
+            <p><b>Name</b>:
+                            <span class="teal-text text-darken-1">
+                                {{file.originalname}}
+                            </span>
+            </p>
+
+            <p><b>Tags</b>:
+              <span ng-repeat="tag in file.tags" class="white-text teal lighten-2 tag">
+                {{tag}}&nbsp;
+              </span>
+              <span class="white-text teal lighten-2 tag">
+                {{file.size/1000}} K
+              </span>
+            </p>
+
+          </div>
+          <div class="card-action">
+            <a href="<%= root %>/file/?id={{file._id}}" target="_blank"><i
+                      class="material-icons teal-text text-lighten-2">visibility</i></a>
+            <a href="<%= root %>{{file.path}}" target="_blank">
+              <i class="material-icons teal-text text-lighten-2">cloud_download</i>
+            </a>
+            <!-- Modal Trigger -->
+            <a class="modal-trigger" href="#modal1" ng-click="editTagDialog(file)"><i
+                      class="material-icons teal-text text-lighten-2">mode_edit</i></a>
+            <a ng-click="deleteFile(file._id)" style="cursor:pointer;"><i
+                      class="material-icons teal-text text-lighten-2">delete</i></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col s12 m6 l4">
+        <div class="card">
+          <div class="card-image">
+            <img src="<%= root %>/fx-file-server/images/add-file-600x300.png">
+            <span class="card-title"></span>
+          </div>
+          <div class="card-content">
+            <form ng-upload="uploadComplete(content)" action="<%= root %>/api/file" method="post"
+                  enctype="multipart/form-data">
+              <div class="row file-field input-field" style="margin-bottom: 10px;">
+                <div>
+                  <input class="file-path validate" type="text" name="fx-file-name"/>
+                </div>
+                <div class="btn">
+                  <span>File</span>
+                  <input type="file" id="fx-file" name="fx-file"/>
+                </div>
+              </div>
+              <div class="row">
+                <button class="btn waves-effect waves-light" type="submit" style="width: 100%">
+                  Upload
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <button ng-disabled="page <= 0" class="btn waves-effect waves-light left" ng-click="getPreviousFiles()"
+              name="action">Previous
+      </button>
+      <button ng-disabled="files.length < limit" class="btn waves-effect waves-light right"
+              ng-click="getNextFiles()" name="action">Next
+      </button>
+    </div>
+  </div>
+</main>
+
+<footer class="page-footer grey darken-2">
+  <div class="container ">
+    <div class="row">
+      <div class="col l6 s12">
+        <h5 class="white-text">Wavelet</h5>
+
+        <p class="grey-text text-lighten-4">CODE Name: <b class="teal-text text-lighten-2">fx-wavelet</b> based
+          on <a class="teal-text text-lighten-2" href="http://nodered.org">IBM Node-RED</a></p>
+
+        <p class="grey-text text-lighten-4">A powerful framework to develop your backend application with less
+          coding.</p>
+      </div>
+    </div>
+  </div>
+  <div class="footer-copyright  grey darken-3">
+    <div class="container">
+      © 2015 Copyright Wavelet
+      <a class="grey-text text-lighten-4 right" href="#!">Privacy &amp; Cookies Policy</a>
+    </div>
+  </div>
+</footer>
+
+<!--Import jQuery before materialize.js-->
+<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+
+<script type="text/javascript" src="<%= root %>/materialize/js/materialize.min.js"></script>
+
+<script type="text/javascript" src="<%= root %>/fx-file-server/js/init.js"></script>
+
+</body>
+</html>

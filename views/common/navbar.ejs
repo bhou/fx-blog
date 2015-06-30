@@ -1,0 +1,67 @@
+<%
+var primaryMenu = shared.get('primary-menu');
+if (!primaryMenu) {
+  primaryMenu = [];
+}
+%>
+
+<div class="navbar-fixed">
+  <nav class="grey darken-4">
+    <div class="nav-wrapper">
+      <a href="<%= root %>/"><img id="nav-logo" alt="Wavelet" src="<%= root %>/blog/images/wavelet-48.png"/></a>
+      <a href="<%= root %>/" class="brand-logo logo-font grey-text">
+        Wavelet
+      </a>
+      <a href="#" data-activates="mobile-menu" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
+      <ul class="right hide-on-med-and-down">
+        <%
+        for (var i = 0; i < primaryMenu.length; i++) {
+          var menu = primaryMenu[i];
+        if (menu.type == 'group') {
+        %>
+        <li><a class='dropdown-button grey-text' href='#' data-activates='<%= menu.id %>'><%= menu.name %><i
+                    class="mdi-navigation-arrow-drop-down right"></i></a></li>
+        <%
+        } else {
+        %>
+        <li><a class="grey-text" href="<%= menu.value %>"><%= menu.name %></a></li>
+        <%
+        }
+        }
+        %>
+      </ul>
+
+      <ul class="side-nav" id="mobile-menu">
+        <li><a class='dropdown-button grey-text' href='#' data-activates='wavelet-pack'>Wavelet Pack<i
+                    class="mdi-navigation-arrow-drop-down right"></i></a></li>
+        <li><a class="grey-text" href="<%= root %>/blog/category?cat=tutorial">Tutorial</a></li>
+        <li><a class="grey-text" href="<%= root %>/blog/category?cat=document">Document</a></li>
+        <li><a class="grey-text" href="<%= root %>/blog">Blog</a></li>
+        <li><a class="grey-text" href="<%= root %>/service">Service</a></li>
+        <li><a class="grey-text" href="<%= root %>/wavelet">Wavelet</a></li>
+        <li><a class="grey-text" href="<%= root %>/plugin">Plugin</a></li>
+      </ul>
+    </div>
+
+    <!-- Dropdown Structure -->
+    <%
+    for (var i = 0; i < primaryMenu.length; i++) {
+      var menu = primaryMenu[i];
+    if (menu.type == 'group') {
+    %>
+    <ul id='<%= menu.id %>' class='dropdown-content'>
+      <%
+      for (var j = 0; j < menu.value.length; j++) {
+        var submenu = menu.value[j];
+      %>
+      <li><a href="<%= submenu.value %>"><%= submenu.name %></a></li>
+      <%
+      }
+      %>
+    </ul>
+    <%
+    }
+    }
+    %>
+  </nav>
+</div>

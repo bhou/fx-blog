@@ -1,0 +1,19 @@
+{
+  "name": "wavelet-landing-page",
+  "version": "0.0.1",
+  "main": "./index.js",
+  "engines": {
+    "node": "0.12.*"
+  },
+  "dependencies": {
+  },
+  "plugin": {
+    "consumes": [
+      "logger",
+      "waveletApp",
+      "express",
+      "ejs"
+    ],
+    "provides": []
+  }
+}
