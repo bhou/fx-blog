@@ -1,6 +1,6 @@
 {
   "name": "wavelet-landing",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "wavelet": {
     "fx-config": "*",
     "fx-logger": "*",
@@ -13,7 +13,7 @@
     "fx-markdown": "*",
     "fx-basic-auth": "*",
     "fx-red": "*",
-    "fx-red-ejs": "*",
+    "fx-red-ejs": "0.1.2",
     "fx-red-config": "*",
     "fx-red-eventbus": "*",
     "fx-red-file": "*",

@@ -363,3 +363,17 @@ footer.page-footer {
     width: 100%;
     height: 100%;
 }
+
+/* TOC */
+#toc {
+    margin-right: 10px;
+    margin-left: 10px;
+    padding-top: 20px;
+}
+
+#toc .toc-active a {
+    font-weight: 500;
+    border-left: 2px solid #ea4a4f;
+}
+
+/* END OF TOC*/
